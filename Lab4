@@ -1,0 +1,164 @@
+package abstractexample;
+import java.util.Locale;
+import java.util.Scanner;
+import java.util.Arrays;
+
+public abstract class Geo_feature {
+    private final String name;
+    public Geo_feature(String name){
+        this.name = name;
+    }
+    public String getName(){
+        return name;
+    }
+}
+
+class Sea extends Geo_feature implements Comparable<Sea> {
+    private final String ocean;
+    private final Double area;
+
+    Sea(String name, String ocean, Double area) {
+        super(name);
+        this.ocean = ocean;
+        this.area = area;
+    }
+
+    public String getOcean() {
+        return ocean;
+    }
+    public Double getArea() {
+        return area;
+    }
+
+    @Override
+    public String toString() {
+        return "Море{" + "\n" +
+                "Название: " + super.getName() + "\n" +
+                "Находится в " + ocean + " океане " + "\n" +
+                "Площадь составляет: " + area + ", тыс. кв. км" +
+                '}';
+    }
+
+    @Override
+    public int compareTo(Sea o) {
+        return super.getName().compareTo(o.getName());
+    }
+}
+
+class Waterfall extends Geo_feature implements Comparable<Waterfall> {
+    private final String country;
+    private final Double height;
+
+    Waterfall(String name, String country, double height) {
+        super(name);
+        this.country = country;
+        this.height = height;
+    }
+
+    public String getCountry(){
+        return country;
+    }
+    public Double getHeight(){
+        return height;
+    }
+
+    @Override
+    public String toString() {
+        return "Водопад{" + "\n" +
+                "Название: " + super.getName() + "\n" +
+                "Страна: " + country + "\n" +
+                "Высота: " + height + ", м" +
+                '}';
+    }
+
+    @Override
+    public int compareTo(Waterfall o) {
+        return this.height.compareTo(o.height);
+    }
+}
+
+class AbstractExample {
+    public static void main(String[] args){
+        Scanner in = new Scanner(System.in);
+        in.useLocale(Locale.US);
+        String name, ocean, country;
+        double area, height;
+        boolean flag = true;
+        boolean Flag = true;
+        System.out.print("Введите количество объектов класса Море: ");
+        int n = in.nextInt();
+        Sea mas_s[] = new Sea[n];
+        for(int i = 0; i < n; i++) {
+            System.out.print("Введите название моря: ");
+            name = in.next();
+            System.out.print("Введите океан к которому относится море: ");
+            ocean = in.next();
+            System.out.print("Введите площадь моря: ");
+            area = in.nextDouble();
+            mas_s[i] = new Sea(name, ocean, area);
+            System.out.println(mas_s[i]);
+        }
+        System.out.print("Введите количество объектов класса Водопад: ");
+        int m = in.nextInt();
+        Waterfall mas_w[] = new Waterfall[m];
+        for(int i = 0; i < m; i++){
+            System.out.print("Введите название водопада: ");
+            name = in.next();
+            System.out.print("Введите название страну, в которой находится водопад: ");
+            country = in.next();
+            System.out.print("Введите высоту водопада: ");
+            height = in.nextDouble();
+            mas_w[i] = new Waterfall(name, country, height);
+            System.out.println(mas_w[i]);
+        }
+
+        Arrays.sort(mas_s);
+        Arrays.sort(mas_w);
+
+        System.out.println("------------------------------");
+        System.out.println("Моря отсортированные по названию");
+        for(int i = 0; i < n; i++){
+            System.out.println(mas_s[i]);
+        }
+        System.out.println("------------------------------");
+        System.out.println("Водопады отсортированные по высоте");
+        for(int i = 0; i < m; i++){
+            System.out.println(mas_w[i]);
+        }
+
+        System.out.println("------------------------------");
+        System.out.println("Перечень морей Атлантического или Индийского океана");
+        for(int i = 0; i < n; i++) {
+            if(mas_s[i].getOcean().equals("Атлантический") || mas_s[i].getOcean().equals("Индийский")) {
+                System.out.println(mas_s[i]);
+                flag = false;
+            }
+        }
+        if(flag)
+            System.out.println("Морей, принадлежащих Атлантическому или Индийскому океану в перечне нет");
+
+        System.out.println("------------------------------");
+        System.out.println("Перечень водопадов, высота которых не является наименьшей среди всех водопадов");
+        double min = mas_w[0].getHeight();
+        for(int i = 0; i < m; i++) {
+            if(mas_w[i].getHeight() > min) {
+                System.out.println(mas_w[i]);
+                Flag = false;
+            }
+        }
+        if(Flag)
+            System.out.println("Все водопады одинаковой высоты");
+    }
+}
+
+
+     /*   mas_s[0] = new Sea("Black", "Atlantic", 436.402);
+        mas_s[1] = new Sea("Baltic", "Atlantic", 377.0);
+        mas_s[2] = new Sea("Red", "Indian", 438.0);
+        mas_s[3] = new Sea("Arabian", "Indian", 3862.0);
+
+        mas_w[0] = new Waterfall("Victoria","Zambia",120.0);
+        mas_w[1] = new Waterfall("Vernal","USA", 96.62);
+        mas_w[2] = new Waterfall("Angel","Venezuela", 807.0);
+        mas_w[3] = new Waterfall("Niagara","Canada", 53.0);
+        */
