@@ -1,0 +1,104 @@
+import java.util.Scanner;
+
+class Receipt {
+    private int number;
+    private String date;
+    private double sum;
+    private static int k =0;
+    
+    Receipt() {
+        number=0;
+        date="";
+        sum=0;
+        k++;
+    }
+    
+    Receipt(int number, String date, double sum) {
+        this.number=number;
+        this.date=date;
+        this.sum=sum;
+        k++;
+    }
+    
+    Receipt(Receipt r) {
+        number=r.number;
+        date=r.date;
+        sum=r.sum;
+        k++;
+    }
+    
+    public void show(){
+        System.out.println("Номер: "+number+", дата: "+date+", сумма: "+sum);
+    }
+    public int getNumber() {
+        return number;
+    }
+    public String getDate() {
+        return date;
+    }
+    public double getSum() {
+        return sum;
+    }
+    public static int getK() {
+        return k;
+    }
+}
+
+
+class Example1 {
+    public static void main(String[] args) {
+        Scanner sc1 = new Scanner(System.in);
+        int a = 0;
+        System.out.print("Введите количество квитанций: ");
+        int n = sc1.nextInt();
+        System.out.println("-------------------------");
+        Receipt mas[] = new Receipt[n];
+        for(int i=0; i<n; i++){
+            System.out.println("Введите информацию о квитанции");
+            System.out.print("Номер квитанции: ");
+            int number = sc1.nextInt();
+            System.out.print("Дата (в формате 12042019): ");
+            sc1.nextLine();
+            String date = sc1.nextLine();
+            System.out.print("Сумма квитанции: ");
+            double sum = sc1.nextDouble();
+            mas[i] = new Receipt(number, date, sum);
+            System.out.println("-------------------------");
+        }
+
+        System.out.println("Число созданных объектов:" + Receipt.getK());
+        System.out.println("-------------------------");
+
+        System.out.println("Список всех квитанций:");
+        for(Receipt x:mas)
+            x.show();
+        System.out.println("-------------------------");
+
+        System.out.println("Максимальная сумма квитанции:");
+        double max = 0;
+        for(Receipt x:mas){
+            if(x.getSum()>max)
+                max = x.getSum();
+        }
+        for(Receipt x:mas)
+            if (max == x.getSum()) {
+                x.show();
+                System.out.println("-------------------------");
+            }
+
+        System.out.println("Квитанции, содержащие в дате цифру 5,7 или 9:");
+        boolean b = false;
+        for(Receipt x:mas) {
+            for(int i=0; i<8; i++) {
+                char c = x.getDate().charAt(i);
+                if((c == '5' || c == '7' || c == '9')) {
+                    b = true;
+                    x.show();
+                    break;
+                }
+            }
+        }
+        if(!b)
+            System.out.println("Квитанций, удовлетворяющих условию, нет!");
+    }
+}
